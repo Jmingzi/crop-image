@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>crop image</title>
+  <title>图片处理工具 by jmingzi | zhangfx</title>
   <style>
+    body {
+      font-family: Arial, Helvetica, 'STHeiti STXihei', 'Microsoft YaHei', Tohoma, sans-serif;
+    }
     .area {
       position: absolute;
       top: 50%;
@@ -11,14 +14,8 @@
       transform: translate(-50%, -50%);
       text-align: center;
     }
-    .area__wrap {
-      width: 300px;
-      height: 300px;
-      border: 1px #ccc dashed;
-      margin: 10px auto;
-    }
-    .area__wrap--active {
-      border-color: red;
+    .drag--active {
+      background-color: rgba(255, 0, 102, 0.1);
     }
     .log {
       width: 600px;
@@ -46,13 +43,13 @@
 </script>
 
 <div class="area">
-  <p>裁剪基准：375 * 1200</p>
   <div class="area__wrap" id="drag">
     <p>拖拽图片到页面内即可</p>
   </div>
+  <p style="font-size: 12px; color: #999;">裁剪基准：375 * 1200</p>
   <div style="text-align: left">
     <input type="checkbox" id="isMini" checked> <label for="isMini">压缩</label>
-    <input type="text" placeholder="压缩key" id="key">
+    <input type="text" placeholder="可选的压缩key" id="key">
   </div>
   <div class="log" id="log">
     <p>操作日志：</p>
@@ -62,20 +59,29 @@
 <script>
   const { ipcRenderer } = require('electron')
   const { dialog } = require('electron').remote
-  const dragElem = document.getElementById('drag')
+  // const dragElem = document.getElementById('drag')
   const logElem = document.getElementById('log')
-  const dragElemActiveClass = 'area__wrap--active'
-  document.addEventListener('dragover', function (e) {
+  const dragElemActiveClass = 'drag--active'
+
+  document.body.addEventListener('dragover', function (e) {
     e.preventDefault()
     e.stopPropagation()
-    if (!dragElem.classList.contains(dragElemActiveClass)) {
-      dragElem.classList.add(dragElemActiveClass)
+    if (!this.classList.contains(dragElemActiveClass)) {
+      this.classList.add(dragElemActiveClass)
     }
   })
-  document.addEventListener('drop', function (e) {
+
+  document.body.addEventListener('dragleave', function (e) {
     e.preventDefault()
     e.stopPropagation()
-    dragElem.classList.remove(dragElemActiveClass)
+    this.classList.remove(dragElemActiveClass)
+  })
+
+
+  document.body.addEventListener('drop', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.classList.remove(dragElemActiveClass)
 
     if (e.dataTransfer.files.length === 1) {
       const { path, name } = e.dataTransfer.files[0]

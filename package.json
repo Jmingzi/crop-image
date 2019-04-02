@@ -1,5 +1,5 @@
 {
-  "name": "crop-image",
+  "name": "esc-image-tools",
   "version": "1.0.0",
   "description": "",
   "main": "main.js",
@@ -38,5 +38,7 @@
       "category": "your.app.category.type"
     }
   },
-  "extraResources": ["imagemagick/"]
+  "extraResources": [
+    "imagemagick/"
+  ]
 }

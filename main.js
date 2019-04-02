@@ -1,12 +1,12 @@
-// const path = require('path')
+const path = require('path')
 const { app, BrowserWindow, ipcMain } = require('electron')
 const crop = require('./lib')
 // const watch = require('./lib/watch')
 
-// require('electron-reload')(__dirname, {
-//   electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
-//   hardResetMethod: 'exit'
-// })
+require('electron-reload')(__dirname, {
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron'),
+  hardResetMethod: 'exit'
+})
 //
 // watch(__dirname, /\.js$/, () => {
 //   console.log('重启')
