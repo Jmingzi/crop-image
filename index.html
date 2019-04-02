@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>crop image</title>
+  <style>
+    .area {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .area__wrap {
+      width: 300px;
+      height: 300px;
+      border: 1px #ccc dashed;
+      margin: 10px auto;
+    }
+    .area__wrap--active {
+      border-color: red;
+    }
+    .log {
+      width: 600px;
+      height: 300px;
+      overflow: auto;
+      background-color: #eee;
+      text-align: left;
+      padding: 10px;
+    }
+    .log p {
+      margin: 0;
+      padding: 0;
+      color: #333;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+<div class="area">
+  <div class="area__wrap" id="drag">
+    <p>拖拽或点击选择图片</p>
+  </div>
+  <div style="text-align: left">
+    <input type="checkbox" id="isMini" checked> <label for="isMini">压缩</label>
+    <input type="text" placeholder="压缩key" id="key">
+  </div>
+  <div class="log" id="log">
+    <p>操作日志：</p>
+  </div>
+</div>
+
+<script>
+  const { ipcRenderer } = require('electron')
+  const { dialog } = require('electron').remote
+  const dragElem = document.getElementById('drag')
+  const logElem = document.getElementById('log')
+  const dragElemActiveClass = 'area__wrap--active'
+  dragElem.addEventListener('dragover', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!this.classList.contains(dragElemActiveClass)) {
+      this.classList.add(dragElemActiveClass)
+    }
+  })
+  dragElem.addEventListener('drop', function (e) {
+    e.preventDefault()
+    e.stopPropagation()
+    this.classList.remove(dragElemActiveClass)
+
+    if (e.dataTransfer.files.length === 1) {
+      const { path, name } = e.dataTransfer.files[0]
+      const { checked } = document.getElementById('isMini')
+      ipcRenderer.send('message', JSON.stringify({
+        path,
+        name,
+        isMini: checked,
+        miniKey: checked ? document.getElementById('key').value : null
+      }))
+    } else {
+      dialog.showErrorBox('提示', '一次只能处理一张图片')
+    }
+  })
+
+  ipcRenderer.on('reply', (event, msg) => {
+    // console.log(arg) // prints "pong"
+    const p = document.createElement('p')
+    p.innerHTML = msg
+    logElem.appendChild(p)
+  })
+</script>
+</body>
+</html>
