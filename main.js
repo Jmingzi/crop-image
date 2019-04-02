@@ -64,11 +64,11 @@ app.on('activate', () => {
 
 // 在这个文件中，你可以续写应用剩下主进程代码。
 // 也可以拆分成几个文件，然后用 require 导入。
-ipcMain.on('message', async (event, arg) => {
+ipcMain.on('message', (event, arg) => {
   const log = msg => event.sender.send('reply', msg)
   log('开始处理')
   crop(JSON.parse(arg), log, (arr) => {
-    log(arr.map((x => `<a href="javascript:;">${x}</a>`)).join('<br>'))
+    log(arr.map(((x, i) => `<a href="javascript:copy('${x}');">链接${i + 1}，点击复制到剪切板</a>`)).join('<br>'))
     log('处理完成')
   })
 })

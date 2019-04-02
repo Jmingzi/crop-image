@@ -37,6 +37,14 @@
   </style>
 </head>
 <body>
+<script>
+  const { clipboard } = require('electron').remote
+  function copy(url) {
+    clipboard.clear()
+    clipboard.writeText(url)
+  }
+</script>
+
 <div class="area">
   <p>裁剪基准：375 * 1200</p>
   <div class="area__wrap" id="drag">
