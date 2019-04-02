@@ -1,5 +1,7 @@
 # crop-image
 
+> 仅支持 macos
+
 第一步
 ```###
 brew install imagemagick
