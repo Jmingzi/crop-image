@@ -38,8 +38,9 @@
 </head>
 <body>
 <div class="area">
+  <p>裁剪基准：375 * 1200</p>
   <div class="area__wrap" id="drag">
-    <p>拖拽或点击选择图片</p>
+    <p>拖拽图片到页面内即可</p>
   </div>
   <div style="text-align: left">
     <input type="checkbox" id="isMini" checked> <label for="isMini">压缩</label>
@@ -56,17 +57,17 @@
   const dragElem = document.getElementById('drag')
   const logElem = document.getElementById('log')
   const dragElemActiveClass = 'area__wrap--active'
-  dragElem.addEventListener('dragover', function (e) {
+  document.addEventListener('dragover', function (e) {
     e.preventDefault()
     e.stopPropagation()
-    if (!this.classList.contains(dragElemActiveClass)) {
-      this.classList.add(dragElemActiveClass)
+    if (!dragElem.classList.contains(dragElemActiveClass)) {
+      dragElem.classList.add(dragElemActiveClass)
     }
   })
-  dragElem.addEventListener('drop', function (e) {
+  document.addEventListener('drop', function (e) {
     e.preventDefault()
     e.stopPropagation()
-    this.classList.remove(dragElemActiveClass)
+    dragElem.classList.remove(dragElemActiveClass)
 
     if (e.dataTransfer.files.length === 1) {
       const { path, name } = e.dataTransfer.files[0]
