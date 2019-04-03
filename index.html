@@ -19,7 +19,7 @@
     }
     .log {
       width: 600px;
-      height: 300px;
+      height: 500px;
       overflow: auto;
       background-color: #eee;
       text-align: left;
@@ -46,10 +46,13 @@
   <div class="area__wrap" id="drag">
     <p>拖拽图片到页面内即可</p>
   </div>
-  <p style="font-size: 12px; color: #999;">裁剪基准：375 * 1200</p>
   <div style="text-align: left">
     <input type="checkbox" id="isMini" checked> <label for="isMini">压缩</label>
     <input type="text" placeholder="可选的压缩key" id="key">
+    <span>裁剪基准：宽</span>
+    <input type="number" value="375" id="width" readonly style="background-color: #f2f2f2">
+    <span>高度</span>
+    <input type="number" value="1000" id="height">
   </div>
   <div class="log" id="log">
     <p>操作日志：</p>
@@ -90,7 +93,9 @@
         path,
         name,
         isMini: checked,
-        miniKey: checked ? document.getElementById('key').value : null
+        miniKey: checked ? document.getElementById('key').value : null,
+        width: document.getElementById('width').value,
+        height: document.getElementById('height').value,
       }))
     } else {
       dialog.showErrorBox('提示', '一次只能处理一张图片')
